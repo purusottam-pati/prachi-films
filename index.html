@@ -86,8 +86,16 @@
     class="absolute top-0 left-0 w-full h-full md:left-[20%] md:w-[120%]">
   </iframe>--> 
 
-  <img src="./Hero_Section_Updated.jpg" 
-       class="absolute top-0 left-0 w-full h-full object-cover" /
+  <!--<img src="./Hero_Section_Updated.jpg" 
+       class="absolute top-0 left-0 w-full h-full object-cover">-->
+      <picture>
+  <!-- Desktop Image -->
+  <source media="(min-width: 768px)" srcset="./Hero_Section_Updated.jpg">
+
+  <!-- Mobile Image -->
+  <img src="./Hero_Section_Mobile.jpg" 
+       class="absolute top-0 left-0 w-full h-full object-cover">
+</picture>
 
   <!-- 2. Dark overlay -->
   <div class="absolute inset-0 bg-slate-950/0"></div>
