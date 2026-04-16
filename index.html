@@ -454,9 +454,23 @@ customColor.addEventListener("input", () => {
 hexInput.addEventListener("input", () => {
   applyColor(hexInput.value);
 });
+  // DOWNLOAD BUTTON
+const downloadBtn = document.getElementById("downloadBtn");
+
+downloadBtn.addEventListener("click", () => {
+
+  if (!currentImage) {
+    alert("Please upload an image first!");
+    return;
+  }
+
+  const link = document.createElement("a");
+  link.download = "prachi-films.png";
+  link.href = canvas.toDataURL("image/png", 1.0);
+
+  link.click();
+});
 </script>
-
-
 
 <!-- Booking -->
 
