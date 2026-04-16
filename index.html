@@ -16,7 +16,7 @@ section {
   <!-- Navbar -->
    <nav class="flex justify-between items-center px-5 py-3 bg-black/80 fixed w-full z-50 bg-white/10 backdrop-blur-md border-b border-white/10">
     
-  <a href="#" class="flex items-center gap-2">
+  <a href="#" class="flex items-center">
     <img src="./LOGO-YELLOW.png" alt="Prachi Films Logo" class="h-10 w-auto">
     <span class="text-xl font-bold">Prachi Films</span>
   </a>
@@ -35,6 +35,13 @@ section {
     </a>
   </li>
 
+    <li>
+  <a href="#bg-remover"
+     class="px-3 py-1 rounded-md border border-transparent hover:border-white/30 hover:bg-white/10 transition">
+    Bg-remover
+  </a>
+</li>
+
   <li>
     <a href="#services" class="px-3 py-1 rounded-md border border-transparent hover:border-white/30 hover:bg-white/10 transition duration-300">
       Services
@@ -46,13 +53,6 @@ section {
       Gallery
     </a>
   </li>
-
-  <li>
-  <a href="#bg-remover"
-     class="px-3 py-1 rounded-md border border-transparent hover:border-white/30 hover:bg-white/10 transition">
-    Bg-remover
-  </a>
-</li>
 
   <li>
     <a href="#contact" class="px-3 py-1 rounded-md border border-transparent hover:border-white/30 hover:bg-white/10 transition duration-300">
@@ -83,14 +83,14 @@ section {
     <a href="#about" class="menu-link">About</a>
     <a href="#services" class="menu-link">Services</a>
     <a href="#gallery" class="menu-link">Gallery</a>
-    <a href="#bg-remover" class="menu-link">Tools</a>
+    <a href="#bg-remover" class="menu-link">Bg-remover</a>
     <a href="#contact" class="menu-link">Contact</a>
   </div>
 
 </div>
 
 <!-- Hero Section -->
-<section class="relative h-screen overflow-hidden">
+<section class="relative h-screen overflow-hidden py-16 md:py-24 px-4">
 
   <!-- 1. Spline (shifted to RIGHT) -->
  <!--<iframe 
@@ -105,7 +105,7 @@ section {
   <img src="./Hero_Section_Mobile.jpg"
        class="absolute inset-0 w-full h-full object-cover object-[50%_20%] md:object-center">
 
-</picture>-->
+  </picture>-->
 
   <!--<img src="./Hero_Section_Updated.jpg" 
        class="absolute top-0 left-0 w-full h-full object-cover" />-->
@@ -156,9 +156,271 @@ section {
   </div>
 </section>
 
+<!--Background Remover-->
+<section id="bg-remover" class="p-10 bg-slate-950 text-white ">
 
- <!-- Review -->
-<section class="p-10 bg-slate-950 text-white ">
+  <h2 class="text-3xl font-bold text-center mb-10">
+    Background <span class="text-yellow-500">Remover</span>
+  </h2>
+
+  <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
+
+    <!-- LEFT: BEFORE -->
+    <div class="text-center">
+
+      <h3 class="mb-4 text-lg">Before</h3>
+
+      <img id="beforeImg"
+           class="w-full h-80 object-contain rounded-lg border border-gray-700 mb-4">
+
+      <!-- Upload Button -->
+      <label class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded cursor-pointer transition">
+        Upload Image
+        <input type="file" id="upload" class="hidden">
+      </label>
+
+    </div>
+
+
+    <!-- RIGHT: AFTER -->
+    <div class="text-center relative">
+
+      <h3 class="mb-4 text-lg">After</h3>
+
+      <!-- Canvas -->
+      <div class="relative">
+    
+        <div class="relative">
+
+          <!-- Canvas -->
+            <canvas id="canvas" 
+              class="w-full h-80 object-contain rounded-lg border border-gray-400">
+            </canvas>
+
+            <!-- Loader INSIDE -->
+            <div id="loader"
+              class="hidden absolute inset-0 flex flex-col items-center justify-center 
+              bg-black/60 backdrop-blur-sm rounded-lg">
+
+              <!-- Spinner -->
+              <div class="w-10 h-10 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
+
+                <!-- Progress Bar -->
+                <div class="w-40 h-2 bg-gray-700 rounded mt-4 overflow-hidden">
+                  <div id="progressBar" class="h-full bg-yellow-500 w-0">
+
+                  </div>
+                </div>
+
+                <!-- Percentage -->
+                <p id="progressText" class="text-sm mt-2 text-white">0%</p>
+              </div>
+            </div>
+      
+            <!-- Color Picker Icon (TOP RIGHT) -->
+            <div class="absolute top-2 right-2">
+
+              <!-- Hidden Color Input -->
+              <div class="absolute top-2 right-2">
+
+                <!-- ICON BUTTON -->
+                <div id="colorBtn" 
+                  class="bg-white/20 backdrop-blur-md p-1 rounded-full border border-white/20 hover:bg-white/30 transition cursor-pointer">🎨
+                </div>
+
+                <!-- COLOR PANEL -->
+                <div id="colorPanel"
+                  class="hidden absolute right-0 mt-2 w-52 bg-white/10 backdrop-blur-xl 
+                  border border-white/20 p-4 rounded-xl shadow-xl">
+
+                  <!-- Preset Colors -->
+                  <div class="grid grid-cols-5 gap-2 mb-4">
+                    <div class="w-6 h-6 rounded bg-white cursor-pointer" data-color="#ffffff"></div>
+                    <div class="w-6 h-6 rounded bg-black cursor-pointer" data-color="#000000"></div>
+                    <div class="w-6 h-6 rounded bg-red-500 cursor-pointer" data-color="#ef4444"></div>
+                    <div class="w-6 h-6 rounded bg-blue-500 cursor-pointer" data-color="#1100ff"></div>
+                    <div class="w-6 h-6 rounded bg-green-500 cursor-pointer" data-color="#22c55e"></div>
+                    <div class="w-6 h-6 rounded bg-yellow-400 cursor-pointer" data-color="#facc15"></div>
+                    <div class="w-6 h-6 rounded bg-pink-500 cursor-pointer" data-color="#ec4899"></div>
+                    <div class="w-6 h-6 rounded bg-purple-500 cursor-pointer" data-color="#a855f7"></div>
+                  </div>
+
+                  <!-- Custom Color -->
+                  <input type="color" id="customColor"
+                    class="w-full h-10 mb-3 cursor-pointer border-none">
+
+                  <!-- HEX Input -->
+                  <input type="text" id="hexInput"
+                    placeholder="#ffffff"
+                    class="w-full p-2 rounded bg-black/40 text-white text-sm outline-none border border-white/20">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Download Button -->
+          <button id="downloadBtn"
+            class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded transition">
+            Download Image
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+const upload = document.getElementById("upload");
+const loader = document.getElementById("loader");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+const downloadBtn = document.getElementById("downloadBtn");
+const beforeImg = document.getElementById("beforeImg");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const colorBtn = document.getElementById("colorBtn");
+const colorPanel = document.getElementById("colorPanel");
+const customColor = document.getElementById("customColor");
+const hexInput = document.getElementById("hexInput");
+
+let currentImage = null;
+
+// ✅ UPLOAD IMAGE (FIX YOUR ISSUE)
+upload.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // Show BEFORE image
+  beforeImg.src = URL.createObjectURL(file);
+
+  // SHOW LOADER
+  loader.classList.remove("hidden");
+  downloadBtn.disabled = true;
+
+
+  // Send to API
+  const formData = new FormData();
+  formData.append("image_file", file);
+  formData.append("size", "auto");
+
+  const xhr = new XMLHttpRequest();
+
+xhr.open("POST", "https://api.remove.bg/v1.0/removebg");
+xhr.setRequestHeader("X-Api-Key", "V6W9HLQb226KyRMyWRLeRVCB");
+
+// START FROM 10%
+progressBar.style.width = "10%";
+progressText.textContent = "10%";
+
+// REAL PROGRESS (10 → 70)
+xhr.upload.onprogress = (e) => {
+  if (e.lengthComputable) {
+    let percent = 10 + Math.round((e.loaded / e.total) * 60);
+    progressBar.style.width = percent + "%";
+    progressText.textContent = percent + "%";
+  }
+};
+
+xhr.onload = () => {
+  if (xhr.status === 200) {
+
+    let percent = 70;
+
+    const finish = setInterval(() => {
+      percent += 5;
+
+      progressBar.style.width = percent + "%";
+      progressText.textContent = percent + "%";
+
+      if (percent >= 100) {
+        clearInterval(finish);
+
+        const blob = new Blob([xhr.response], { type: "image/png" });
+        const img = new Image();
+        img.src = URL.createObjectURL(blob);
+
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+
+          currentImage = img;
+          applyColor("#ffffff");
+
+          loader.classList.add("hidden");
+          downloadBtn.disabled = false;
+        };
+      }
+    }, 100);
+
+  } else {
+    alert("Error removing background");
+    loader.classList.add("hidden");
+  }
+};
+
+xhr.onerror = () => {
+  alert("Upload failed");
+  loader.classList.add("hidden");
+};
+
+xhr.responseType = "arraybuffer";
+xhr.send(formData);
+});
+
+// Toggle color panel
+colorBtn.addEventListener("click", () => {
+  colorPanel.classList.toggle("hidden");
+});
+
+// Apply color
+function applyColor(color) {
+  if (!currentImage) return;
+
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(currentImage, 0, 0);
+}
+
+// Preset colors
+document.querySelectorAll("[data-color]").forEach(el => {
+  el.addEventListener("click", () => {
+    const color = el.getAttribute("data-color");
+    applyColor(color);
+    hexInput.value = color;
+  });
+});
+
+// Custom color
+customColor.addEventListener("input", () => {
+  applyColor(customColor.value);
+  hexInput.value = customColor.value;
+});
+
+// HEX input
+hexInput.addEventListener("input", () => {
+  applyColor(hexInput.value);
+});
+
+// DOWNLOAD BUTTON
+downloadBtn.addEventListener("click", () => {
+
+  if (!currentImage) {
+    alert("Please upload an image first!");
+    return;
+  }
+
+  const link = document.createElement("a");
+  link.download = "prachi-films.png";
+  link.href = canvas.toDataURL("image/png", 1.0);
+
+  link.click();
+});
+</script>
+
+  <!-- Review -->
+  <!--<section class="p-10 bg-slate-950 text-white ">
 
   <h2 class="text-3xl md:text-3xl font-bold text-center mb-4 ">
     What Our <span class="text-yellow-500">Clients Say</span>
@@ -169,30 +431,25 @@ section {
     <div class="bg-white/5 backdrop-blur-lg border border-white/20 
                 rounded-2xl p-6 max-w-md text-center shadow-lg">
 
-      <!-- Client Image -->
+      // Client Image 
       <img src="https://randomuser.me/api/portraits/women/44.jpg"
            class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-yellow-500">
 
-      <!-- Name -->
-      <h3 class="text-lg font-semibold">Anjali & Rohit</h3>
+      // Name
+      <h3 class="text-lg font-semibold">Chandan & Mama</h3>
 
-      <!-- Stars -->
+      // Stars
       <div class="flex justify-center mt-2 mb-3 text-yellow-400 text-xl">
         ⭐⭐⭐⭐⭐
       </div>
 
-      <!-- Review Text-->
+      // Review Text
       <p class="text-gray-300 text-sm">
         Prachi Films captured our wedding beautifully. Every moment feels alive again when we watch our video. Highly recommended!
       </p>
-
     </div>
-
   </div>
-
-</section>
-
-
+</section>-->
 
 <!-- Our Services -->
 <section id="services" class="p-10">
@@ -207,7 +464,7 @@ section {
     <!-- Card 1 -->
     <div class="bg-gray-900 p-6 rounded-xl hover:scale-105 hover:shadow-xl transition duration-300 group">
       <h3 class="text-xl font-semibold mb-2 group-hover:text-yellow-500 transition">
-        Wedding Photography
+        🎬 Wedding
       </h3>
       <p class="text-gray-400 text-sm">
         Capturing your special moments with elegance and creativity.
@@ -217,17 +474,47 @@ section {
     <!-- Card 2 -->
     <div class="bg-gray-900 p-6 rounded-xl hover:scale-105 hover:shadow-xl transition duration-300 group">
       <h3 class="text-xl font-semibold mb-2 group-hover:text-yellow-500 transition">
-        Cinematic Videography
+        💑 Pre-Wedding
       </h3>
       <p class="text-gray-400 text-sm">
-        Creating beautiful cinematic films that tell your love story.
+        Creating romantic and personalized visuals that reflect your love story before the big day.
       </p>
     </div>
 
     <!-- Card 3 -->
     <div class="bg-gray-900 p-6 rounded-xl hover:scale-105 hover:shadow-xl transition duration-300 group">
       <h3 class="text-xl font-semibold mb-2 group-hover:text-yellow-500 transition">
-        Drone Shoot
+        👗 Model Photography
+      </h3>
+      <p class="text-gray-400 text-sm">
+        Crafting stunning, high-end visuals that highlight personality, style, and confidence.
+      </p>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="bg-gray-900 p-6 rounded-xl hover:scale-105 hover:shadow-xl transition duration-300 group">
+      <h3 class="text-xl font-semibold mb-2 group-hover:text-yellow-500 transition">
+        👶 Baby Shoot
+      </h3>
+      <p class="text-gray-400 text-sm">
+        Preserving adorable and precious moments of your little one with warmth and care.
+      </p>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="bg-gray-900 p-6 rounded-xl hover:scale-105 hover:shadow-xl transition duration-300 group">
+      <h3 class="text-xl font-semibold mb-2 group-hover:text-yellow-500 transition">
+        🧵 Thread Ceremony
+      </h3>
+      <p class="text-gray-400 text-sm">
+        Documenting sacred traditions and cultural rituals with authenticity and elegance.
+      </p>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="bg-gray-900 p-6 rounded-xl hover:scale-105 hover:shadow-xl transition duration-300 group">
+      <h3 class="text-xl font-semibold mb-2 group-hover:text-yellow-500 transition">
+        🤰 Maternity Shoot
       </h3>
       <p class="text-gray-400 text-sm">
         Stunning aerial shots to make your event look extraordinary.
@@ -237,7 +524,7 @@ section {
 </section>
 
 <!-- Gallery -->
-<section id="gallery" class="p-10">
+<section id="gallery" class="p-10 ">
 
   <h2 class="text-3xl font-bold text-center">
     Our <span class="text-yellow-500">Gallery</span>
@@ -275,206 +562,9 @@ section {
 </section>
 
 
-<!--Background Remover-->
-<section id="bg-remover" class="p-10 bg-slate-950 text-white">
-
-  <h2 class="text-3xl font-bold text-center mb-10">
-    Background <span class="text-yellow-500">Remover</span>
-  </h2>
-
-  <div class="grid md:grid-cols-2 gap-8 items-center">
-
-    <!-- LEFT: BEFORE -->
-    <div class="text-center">
-
-      <h3 class="mb-4 text-lg">Before</h3>
-
-      <img id="beforeImg"
-           class="w-full h-80 object-contain bg-black rounded-lg border border-gray-700 mb-4">
-
-      <!-- Upload Button -->
-      <label class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded cursor-pointer transition">
-        Upload Image
-        <input type="file" id="upload" class="hidden">
-      </label>
-
-    </div>
-
-
-    <!-- RIGHT: AFTER -->
-    <div class="text-center relative">
-
-  <h3 class="mb-4 text-lg">After</h3>
-
-  <!-- Canvas -->
-  <div class="relative">
-    
-    <canvas id="canvas"
-  class="w-full h-auto max-h-80 object-contain rounded-lg border border-gray-700"></canvas>
-
-      
-  <!-- Color Picker Icon (TOP RIGHT) -->
-  <div class="absolute top-2 right-2">
-
-  <!-- Hidden Color Input -->
-  <div class="absolute top-2 right-2">
-
-  <!-- ICON BUTTON -->
-  <div id="colorBtn"
-    class="bg-white/20 backdrop-blur-md p-1 rounded-full border border-white/20 
-           hover:bg-white/30 transition cursor-pointer">
-    🎨
-  </div>
-
-  <!-- COLOR PANEL -->
-  <div id="colorPanel"
-    class="hidden absolute right-0 mt-2 w-52 bg-white/10 backdrop-blur-xl 
-           border border-white/20 p-4 rounded-xl shadow-xl">
-
-    <!-- Preset Colors -->
-    <div class="grid grid-cols-5 gap-2 mb-4">
-      <div class="w-6 h-6 rounded bg-white cursor-pointer" data-color="#ffffff"></div>
-      <div class="w-6 h-6 rounded bg-black cursor-pointer" data-color="#000000"></div>
-      <div class="w-6 h-6 rounded bg-red-500 cursor-pointer" data-color="#ef4444"></div>
-      <div class="w-6 h-6 rounded bg-blue-500 cursor-pointer" data-color="#1100ff"></div>
-      <div class="w-6 h-6 rounded bg-green-500 cursor-pointer" data-color="#22c55e"></div>
-      <div class="w-6 h-6 rounded bg-yellow-400 cursor-pointer" data-color="#facc15"></div>
-      <div class="w-6 h-6 rounded bg-pink-500 cursor-pointer" data-color="#ec4899"></div>
-      <div class="w-6 h-6 rounded bg-purple-500 cursor-pointer" data-color="#a855f7"></div>
-    </div>
-
-    <!-- Custom Color -->
-    <input type="color" id="customColor"
-      class="w-full h-10 mb-3 cursor-pointer border-none">
-
-    <!-- HEX Input -->
-    <input type="text" id="hexInput"
-      placeholder="#ffffff"
-      class="w-full p-2 rounded bg-black/40 text-white text-sm outline-none border border-white/20">
-
-  </div>
-
-</div>
-</div>
-    
-
-</div>
-
-  <!-- Download Button -->
-  <button id="downloadBtn"
-    class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded transition">
-    Download Image
-  </button>
-
-</div>
-
-    </div>
-
-  </div>
-
-</section>
-
-<script>
-const upload = document.getElementById("upload");
-const beforeImg = document.getElementById("beforeImg");
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-const colorBtn = document.getElementById("colorBtn");
-const colorPanel = document.getElementById("colorPanel");
-const customColor = document.getElementById("customColor");
-const hexInput = document.getElementById("hexInput");
-
-let currentImage = null;
-
-// ✅ UPLOAD IMAGE (FIX YOUR ISSUE)
-upload.addEventListener("change", async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  // Show BEFORE image
-  beforeImg.src = URL.createObjectURL(file);
-
-  // Send to API
-  const formData = new FormData();
-  formData.append("image_file", file);
-  formData.append("size", "auto");
-
-  const response = await fetch("https://api.remove.bg/v1.0/removebg", {
-    method: "POST",
-    headers: {
-      "X-Api-Key": "V6W9HLQb226KyRMyWRLeRVCB"
-    },
-    body: formData
-  });
-
-  const blob = await response.blob();
-  const img = new Image();
-  img.src = URL.createObjectURL(blob);
-
-  img.onload = () => {
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    currentImage = img;
-    applyColor("#ffffff"); // default background
-  };
-});
-
-// Toggle color panel
-colorBtn.addEventListener("click", () => {
-  colorPanel.classList.toggle("hidden");
-});
-
-// Apply color
-function applyColor(color) {
-  if (!currentImage) return;
-
-  ctx.fillStyle = color;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(currentImage, 0, 0);
-}
-
-// Preset colors
-document.querySelectorAll("[data-color]").forEach(el => {
-  el.addEventListener("click", () => {
-    const color = el.getAttribute("data-color");
-    applyColor(color);
-    hexInput.value = color;
-  });
-});
-
-// Custom color
-customColor.addEventListener("input", () => {
-  applyColor(customColor.value);
-  hexInput.value = customColor.value;
-});
-
-// HEX input
-hexInput.addEventListener("input", () => {
-  applyColor(hexInput.value);
-});
-  // DOWNLOAD BUTTON
-const downloadBtn = document.getElementById("downloadBtn");
-
-downloadBtn.addEventListener("click", () => {
-
-  if (!currentImage) {
-    alert("Please upload an image first!");
-    return;
-  }
-
-  const link = document.createElement("a");
-  link.download = "prachi-films.png";
-  link.href = canvas.toDataURL("image/png", 1.0);
-
-  link.click();
-});
-</script>
-
 <!-- Booking -->
 
-<section id="booking" class="py-20 px-6 md:px-16 bg-slate-950">
+<section id="booking" class="py-10 px-6 md:px-16 bg-slate-950">
   <div class="text-center mb-10">
     <h2 class="text-3xl md:text-3xl font-bold">
       Book <span class="text-yellow-500">Your Shoot</span>
@@ -488,7 +578,7 @@ downloadBtn.addEventListener("click", () => {
   <div class="max-w-xl mx-auto bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 shadow-lg">
 
     <form class="space-y-4">
-      <!--<h3 class="text-xl font-semibold mb-1">Send Booking Request</h3>-->
+      <h3 class="text-xl font-semibold mb-1">Get In Touch</h3>
 
       <!-- Name -->
       <input 
@@ -521,7 +611,7 @@ downloadBtn.addEventListener("click", () => {
 
 
 <!-- Contact us -->
-<section id="contact" class="py-20 px-6 md:px-16 bg-slate-950 text-center">
+<section id="contact" class="py-10 px-10 md:px-10 bg-slate-950 text-center">
 
   <h2 class="text-3xl md:text-3xl font-bold">
     Contact <span class="text-yellow-500">Us</span>
