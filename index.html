@@ -9,7 +9,20 @@
 section {
   scroll-margin-top: 100px;
 }
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
 </style>
+
 </head>
 <body class="bg-slate-950 text-white">
   
@@ -22,7 +35,7 @@ section {
             rounded-full shadow-lg z-50">
     
   <a href="#" class="flex items-center">
-    <img src="./PRACHI-LOGO-04 copy.png" alt="Prachi Films Logo" class="h-10 w-auto">
+    <img src="./PRACHI-LOGO-04 copy.png" alt="Prachi Films Logo" class="h-12 w-auto">
     <!--<span class="text-xl font-bold">Prachi Films</span>-->
   </a>
   
@@ -64,9 +77,10 @@ section {
       Contact
     </a>
   </li>
+  
 
 </ul>
-  <a href="#booking" class="bg-yellow-600 hover:bg-yellow-500 px-4 py-1 rounded transition duration-300">Book Now</a>
+  <a href="#booking" class="px-4 py-1 border border-yellow-500 rounded-xl hover:bg-yellow-500 hover:text-black transition">Book Now</a>
 
  <button id="menuBtn" class="md:hidden text-white text-3xl">
   ☰
@@ -102,7 +116,7 @@ section {
     src="https://my.spline.design/genkubgreetingrobot-sO3dkT6GWaWivzrk58268hip/" 
     frameborder="0" 
     class="absolute top-0 left-0 w-full h-full md:left-[20%] md:w-[120%]">
-  </iframe> -->
+  </iframe>-->
 
 
   <!--<picture class="absolute inset-0 w-full h-full">
@@ -118,8 +132,12 @@ section {
        <img src="./Hero_Section_Updated.jpg"
      class="absolute inset-0 w-full h-full object-cover object-[80%_20%] md:object-center">
 
-  <!-- 2. Dark overlay -->
-  <div class="absolute inset-0 bg-slate-950/0"></div>
+     <!--<video autoplay muted loop playsinline class="absolute w-full h-full object-cover">
+  <source src="./Hero_Video.mp4" type="video/mp4">
+</video>-->
+
+  <!--Dark overlay-->
+  <div class="absolute inset-0 bg-black/30"></div>
 
   <!-- 3. Bottom gradient (hide watermark) -->
   <div class="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent z-80"></div>
@@ -133,10 +151,10 @@ section {
         Capture <span class="text-yellow-500">Your Moments</span>
       </h2>
       <p class="mt-4 text-lg text-gray-300">
-        We create cinematic wedding stories
+        We create <span id="changingText" 
+        class="text-gray-300 opacity-100 transition-opacity duration-500"></span>
       </p>
-      <a href="#booking" class="mt-6 inline-block bg-yellow-600 hover:bg-yellow-500 px-6 py-3 rounded transition duration-300">
-  Book Your Shoot
+      <a href="#booking" class="mt-6 inline-block hover:bg-yellow-500 hover:text-black px-6 py-3 border border-yellow-500 rounded-2xl transition duration-300">Book Your Shoot
       </a>
     </div>
     <!-- RIGHT SIDE EMPTY (robot space) -->
@@ -144,6 +162,33 @@ section {
     </div>
   </div>
 </section>
+
+<script>
+const texts = [
+  "cinematic wedding stories",
+  "pre-wedding films",
+  "candid love moments",
+  "luxury visual experiences"
+];
+
+let index = 0;
+const el = document.getElementById("changingText");
+
+function changeText() {
+  el.style.opacity = 0;
+
+  setTimeout(() => {
+    el.textContent = texts[index];
+    el.style.opacity = 1;
+    index = (index + 1) % texts.length;
+  }, 300);
+}
+
+setInterval(changeText, 2500);
+changeText();
+</script>
+
+
 
 <!-- About -->
 <section id="about" class="py-20 px-6 flex justify-center">
@@ -162,7 +207,7 @@ section {
 </section>
 
 <!--Background Remover-->
-<section id="bg-remover" class="p-10 bg-slate-950 text-white ">
+<section id="bg-remover" class="p-10 bg-slate-950 text-white">
 
   <h2 class="text-3xl font-bold text-center mb-10">
     Background <span class="text-yellow-500">Remover</span>
@@ -240,6 +285,7 @@ section {
 
                   <!-- Preset Colors -->
                   <div class="grid grid-cols-5 gap-2 mb-4">
+                    <div class="w-6 h-6 rounded border border-white cursor-pointer flex items-center justify-center"data-color="transparent">✕</div>
                     <div class="w-6 h-6 rounded bg-white cursor-pointer" data-color="#ffffff"></div>
                     <div class="w-6 h-6 rounded bg-black cursor-pointer" data-color="#000000"></div>
                     <div class="w-6 h-6 rounded bg-red-500 cursor-pointer" data-color="#ef4444"></div>
@@ -256,7 +302,7 @@ section {
 
                   <!-- HEX Input -->
                   <input type="text" id="hexInput"
-                    placeholder="#ffffff"
+                    placeholder="#transparent"
                     class="w-full p-2 rounded bg-black/40 text-white text-sm outline-none border border-white/20">
                 </div>
               </div>
@@ -383,8 +429,16 @@ colorBtn.addEventListener("click", () => {
 function applyColor(color) {
   if (!currentImage) return;
 
-  ctx.fillStyle = color;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Clear canvas first
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // If NOT transparent → fill background
+  if (color !== "transparent") {
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Draw image on top
   ctx.drawImage(currentImage, 0, 0);
 }
 
@@ -393,7 +447,7 @@ document.querySelectorAll("[data-color]").forEach(el => {
   el.addEventListener("click", () => {
     const color = el.getAttribute("data-color");
     applyColor(color);
-    hexInput.value = color;
+    hexInput.value = (color === "transparent") ? "" : color;
   });
 });
 
@@ -424,6 +478,7 @@ downloadBtn.addEventListener("click", () => {
 });
 </script>
 
+
   <!-- Review -->
   <!--<section class="p-10 bg-slate-950 text-white ">
 
@@ -452,8 +507,11 @@ downloadBtn.addEventListener("click", () => {
       <p class="text-gray-300 text-sm">
         Prachi Films captured our wedding beautifully. Every moment feels alive again when we watch our video. Highly recommended!
       </p>
+
     </div>
+
   </div>
+
 </section>-->
 
 <!-- Our Services -->
@@ -566,6 +624,81 @@ downloadBtn.addEventListener("click", () => {
   </div>
 </section>
 
+<!--Our Tech Stack-->
+<section class="py-1 px-1 bg-slate-950 text-white overflow-hidden">
+
+  <div class="max-w-6xl mx-auto text-center mb-10">
+    <h2 class="text-3xl md:text-4xl font-bold">
+      Our <span class="text-yellow-500">Gear</span>
+    </h2>
+    <p class="mt-3 text-gray-400">
+      Trusted tools we use to craft cinematic visuals
+    </p>
+  </div>
+
+  <div class="relative overflow-hidden">
+
+  <div id="marqueeTrack"
+    class="flex gap-16 whitespace-nowrap text-lg font-semibold tracking-widest">
+
+    <span>SONY</span>
+    <span>NIKON</span>
+    <span>DJI</span>
+    <span>GODOX</span>
+    <span>SanDisk</span>
+    <span>WELBORN</span>
+    <span>Adobe</span>
+    <span>DaVinci Resolve</span>
+
+    <span>SONY</span>
+    <span>NIKON</span>
+    <span>DJI</span>
+    <span>GODOX</span>
+    <span>SanDisk</span>
+    <span>WELBORN</span>
+    <span>Adobe</span>
+    <span>DaVinci Resolve</span>
+
+    <span>SONY</span>
+    <span>NIKON</span>
+    <span>DJI</span>
+    <span>GODOX</span>
+    <span>SanDisk</span>
+    <span>WELBORN</span>
+    <span>Adobe</span>
+    <span>DaVinci Resolve</span>
+
+  </div>
+
+</div>
+
+<script>
+const track = document.getElementById("marqueeTrack");
+
+// Duplicate content automatically
+track.innerHTML += track.innerHTML;
+
+let position = 0;
+const speed = 0.5; // lower = slower (premium feel)
+
+function animate() {
+  position -= speed;
+
+  // reset smoothly (no jump)
+  if (Math.abs(position) >= track.scrollWidth / 2) {
+    position = 0;
+  }
+
+  track.style.transform = `translateX(${position}px)`;
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+
+</section>
 
 <!--Booking-->
 <section id="booking" class="py-16 md:py-24 px-4 bg-slate-950 text-white">
@@ -599,7 +732,8 @@ downloadBtn.addEventListener("click", () => {
         </select>
 
         <textarea placeholder="Tell us about your shoot..."
-          class="w-full p-3 rounded-lg bg-transparent border border-gray-600 hover:border-yellow-500 outline-none transition"></textarea>
+          class="w-full p-3 rounded-lg bg-transparent border border-gray-600 hover:border-yellow-500 outline-none transition">
+        </textarea>
 
         <button type="submit"
           class="mt-6 w-full border border-yellow-500 text-yellow-500 py-3 rounded-full 
@@ -610,68 +744,72 @@ downloadBtn.addEventListener("click", () => {
       </form>
     </div>
 
-    <!-- RIGHT: CONTACT INFO -->
-    <div class="flex flex-col justify-center">
+    <!--<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8">-->
+      
+      <!-- RIGHT: CONTACT INFO -->
+      <div id="contact" class="flex flex-col justify-center">
 
-      <h2 class="text-3xl md:text-4xl font-bold">
-        Contact <span class="text-yellow-500">Us</span>
-      </h2><p class="text-gray-400 mt-3">
-    Let’s connect and plan your perfect shoot
-  </p><br>
+        <h2 class="text-3xl md:text-4xl font-bold">
+          Contact <span class="text-yellow-500">Us</span>
+        </h2>
+        <p class="text-gray-400 mt-3">
+        Let’s connect and plan your perfect shoot
+        </p>
+        <br>
       
 
-      <!-- Phone -->
-      <p class="mb-4">
-        <span class="text-yellow-500 font-semibold">Call:</span><br>
-        <a href="tel:+918847831154" class="hover:text-yellow-500 transition">
-        +91 88478 31154
-      </a><br>
-      <a href="mailto:yourmail@gmail.com" class="hover:text-yellow-500 transition">
-        prachifilms.in@gmail.com
-      </a>
-      </p>
+        <!-- Phone -->
+        <p class="mb-4">
+          <span class="text-yellow-500 font-semibold">Call:</span><br>
+          <a href="tel:+918847831154" class="hover:text-yellow-500 transition">
+            +91 88478 31154
+          </a><br>
+          <a href="mailto:yourmail@gmail.com" class="hover:text-yellow-500 transition">
+            prachifilms.in@gmail.com
+          </a>
+        </p>
 
-      <span class="mb-3 text-yellow-500 font-semibold">Social:</span>
-      <div class="flex flex-wrap gap-2">
-    <!-- WhatsApp -->
-    <a href="https://wa.me/918847831154" target="_blank"
-      class="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition">
-      <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" class="w-6 h-6">
-    </a>
+        <span class="mb-3 text-yellow-500 font-semibold">Social:</span>
+        <div class="flex flex-wrap gap-2">
+          <!-- WhatsApp -->
+          <a href="https://wa.me/918847831154" target="_blank"
+            class="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" class="w-6 h-6">
+          </a>
 
-    <!-- Instagram -->
-    <a href="https://instagram.com/prachifilms.in" target="_blank"
-    class="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition">
+          <!-- Instagram -->
+          <a href="https://instagram.com/prachifilms.in" target="_blank"
+            class="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition">
 
-  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" class="w-6 h-6">
-    </a>
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" class="w-6 h-6">
+          </a>
 
-  </div><br>
+        </div>
+        <br>
+        <!-- Address -->
+        <p class="mb-4">
+          <span class="text-yellow-500 font-semibold">Visit:</span><br>
+            Bhadrak, Odisha, India
+        </p>
 
-      <!-- Address -->
-      <p class="mb-4">
-        <span class="text-yellow-500 font-semibold">Visit:</span><br>
-        Bhadrak, Odisha, India
-      </p>
-
-      <!-- Map Button -->
-      <a href="https://maps.app.goo.gl/3afe39Be3M7fNtzm8" target="_blank"
-        class="inline-block mb-4 border border-white/30 px-5 py-2 rounded-full 
+        <!-- Map Button -->
+        <a href="https://maps.app.goo.gl/3afe39Be3M7fNtzm8" target="_blank"
+          class="inline-block mb-4 border border-white/30 px-5 py-2 rounded-full 
                hover:bg-white/10 transition">
-        Open in Google Maps →
-      </a>
+                Open in Google Maps →
+        </a>
 
-      <!-- Hours -->
-      <div>
-        <span class="text-yellow-500 font-semibold mb-2">Hours:</span>
-        <p>Everyday 9:00am – 9:00pm</p>
+        <!-- Hours -->
+        <div>
+          <span class="text-yellow-500 font-semibold mb-2">Hours:</span>
+          <p>Everyday 9:00am – 9:00pm</p>
+        </div>
       </div>
-
-    </div>
-
+    <!--</div>-->
   </div>
 </section>
-  
+
+
 <!-- Footer -->
  <footer class="text-center p-5 bg-gray-900">
   <p>© 2026 Prachi Films. All rights reserved. | Designed & Developed by Purusottam Pati</p>
